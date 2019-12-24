@@ -31,6 +31,7 @@ public class FlutterWebviewPlugin implements MethodCallHandler, PluginRegistry.A
     static MethodChannel channel;
     private static final String CHANNEL_NAME = "flutter_webview_plugin";
     private static final String JS_CHANNEL_NAMES_FIELD = "javascriptChannelNames";
+    private static FlutterWebviewPlugin instanceOuter;
 
     public static void registerWith(PluginRegistry.Registrar registrar) {
         if (registrar.activity() != null) {
@@ -38,7 +39,12 @@ public class FlutterWebviewPlugin implements MethodCallHandler, PluginRegistry.A
             final FlutterWebviewPlugin instance = new FlutterWebviewPlugin(registrar.activity(), registrar.activeContext());
             registrar.addActivityResultListener(instance);
             channel.setMethodCallHandler(instance);
+            instanceOuter = instance;
         }
+    }
+
+    public static FlutterWebviewPlugin getInstance(){
+        return instanceOuter;
     }
 
     FlutterWebviewPlugin(Activity activity, Context context) {
