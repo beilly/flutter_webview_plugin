@@ -29,6 +29,7 @@ public class FlutterWebviewPlugin implements MethodCallHandler, PluginRegistry.A
     private WebviewManager webViewManager;
     private Context context;
     static MethodChannel channel;
+    private Map<String, Object> userJS;
     private static final String CHANNEL_NAME = "flutter_webview_plugin";
     private static final String JS_CHANNEL_NAMES_FIELD = "javascriptChannelNames";
     private static FlutterWebviewPlugin instanceOuter;
@@ -52,8 +53,9 @@ public class FlutterWebviewPlugin implements MethodCallHandler, PluginRegistry.A
         this.context = context;
     }
 
-    public WebviewManager getWebViewManager() {
-        return webViewManager;
+    public FlutterWebviewPlugin setUserJS(HashMap<String, Object> userJS) {
+        this.userJS = userJS;
+        return this;
     }
 
     @Override
@@ -146,6 +148,14 @@ public class FlutterWebviewPlugin implements MethodCallHandler, PluginRegistry.A
                 channelNames = (List<String>) arguments.get(JS_CHANNEL_NAMES_FIELD);
             }
             webViewManager = new WebviewManager(activity, context, channelNames);
+        }
+
+        if (null != userJS && userJS.size() > 0){
+            for(Map.Entry<String, Object> entry : userJS.entrySet()){
+                String mapKey = entry.getKey();
+                Object mapValue = entry.getValue();
+                webViewManager.webView.addJavascriptInterface(mapValue, mapKey);
+            }
         }
 
         FrameLayout.LayoutParams params = buildLayoutParams(call);
