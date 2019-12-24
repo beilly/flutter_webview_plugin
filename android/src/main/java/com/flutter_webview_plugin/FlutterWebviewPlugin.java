@@ -46,6 +46,10 @@ public class FlutterWebviewPlugin implements MethodCallHandler, PluginRegistry.A
         this.context = context;
     }
 
+    public WebviewManager getWebViewManager() {
+        return webViewManager;
+    }
+
     @Override
     public void onMethodCall(MethodCall call, MethodChannel.Result result) {
         switch (call.method) {
