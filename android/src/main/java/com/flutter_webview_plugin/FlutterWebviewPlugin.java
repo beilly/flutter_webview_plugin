@@ -53,7 +53,7 @@ public class FlutterWebviewPlugin implements MethodCallHandler, PluginRegistry.A
         this.context = context;
     }
 
-    public FlutterWebviewPlugin setUserJS(HashMap<String, Object> userJS) {
+    public FlutterWebviewPlugin setUserJS(Map<String, Object> userJS) {
         this.userJS = userJS;
         return this;
     }
